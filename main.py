@@ -2,7 +2,7 @@
 import os
 import jinja2
 import webapp2
-
+from modals import Sporocilo
 
 
 template_dir = os.path.join(os.path.dirname(__file__), "templates")
@@ -36,6 +36,8 @@ class MainHandler(BaseHandler):
 class RezultatHandler(BaseHandler):
     def post(self):
         rezultat = self.request.get("vnos")
+        sporocilo = Sporocilo(vnos=rezultat)
+        sporocilo.put()
         return self.write(rezultat)
 
 app = webapp2.WSGIApplication([
