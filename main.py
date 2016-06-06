@@ -33,7 +33,7 @@ class MainHandler(BaseHandler):
         return self.render_template("hello.html")
 
     def post(self):
-        num1 = int(self.request.get("num3"))
+        num1 = int(self.request.get("num1"))
         num2 = int(self.request.get("num2"))
         operacija = self.request.get("operacija")
 
