@@ -29,6 +29,12 @@ class BaseHandler(webapp2.RequestHandler):
 
 
 
+class SeznamSporocilHandler(BaseHandler):
+    def get(self):
+        seznam = Sporocilo.query().fetch()
+        params = {"seznam": seznam}
+        return self.render_template("seznam_sporocil.html", params=params)
+
 class MainHandler(BaseHandler):
     def get(self):
         return self.render_template("hello.html")
@@ -43,4 +49,5 @@ class RezultatHandler(BaseHandler):
 app = webapp2.WSGIApplication([
     webapp2.Route('/', MainHandler),
     webapp2.Route('/rezultat', RezultatHandler),
+    webapp2.Route('/seznam-sporocil', SeznamSporocilHandler),
 ], debug=True)

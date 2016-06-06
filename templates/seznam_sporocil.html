@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Simpl Calculatron</title>
+
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <h1>Seznam sporočil</h1>
+{% for sporocilo in seznam %}
+    <p>{{ sporocilo.vnos }}, {{ sporocilo.key.id() }}</p>
+{% endfor %}
+
+</body>
+</html>
