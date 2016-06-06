@@ -2,7 +2,6 @@
 import os
 import jinja2
 import webapp2
-import time
 
 
 
