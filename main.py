@@ -35,6 +35,12 @@ class SeznamSporocilHandler(BaseHandler):
         params = {"seznam": seznam}
         return self.render_template("seznam_sporocil.html", params=params)
 
+class PosameznoSporociloHandler(BaseHandler):
+    def get(self, sporocilo_id):
+        sporocilo = Sporocilo.get_by_id(int(sporocilo_id))
+        params = {"sporocilo": sporocilo}
+        return self.render_template("posamezno_sporocilo.html", params=params)
+
 class MainHandler(BaseHandler):
     def get(self):
         return self.render_template("hello.html")
@@ -50,4 +56,5 @@ app = webapp2.WSGIApplication([
     webapp2.Route('/', MainHandler),
     webapp2.Route('/rezultat', RezultatHandler),
     webapp2.Route('/seznam-sporocil', SeznamSporocilHandler),
+    webapp2.Route('/sporocilo/<sporocilo_id:\d+>', PosameznoSporociloHandler),
 ], debug=True)
