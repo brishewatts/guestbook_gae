@@ -28,32 +28,17 @@ class BaseHandler(webapp2.RequestHandler):
         return self.response.out.write(template.render(params))
 
 
+
 class MainHandler(BaseHandler):
     def get(self):
         return self.render_template("hello.html")
 
+class RezultatHandler(BaseHandler):
     def post(self):
-        num1 = int(self.request.get("num1"))
-        num2 = int(self.request.get("num2"))
-        operacija = self.request.get("operacija")
-
-        if operacija == "+":
-            rezultat = num1 + num2
-
-        elif operacija == "-":
-            rezultat = num1 - num2
-
-        elif operacija == "*":
-            rezultat = num1 * num2
-
-        elif operacija == "/":
-            rezultat = float(num1) / float(num2)
-
-        rezultat = {
-            "rezultat": rezultat
-        }
-        return self.render_template("rezultat.html", params=rezultat)
+        rezultat = self.request.get("vnos")
+        return self.write(rezultat)
 
 app = webapp2.WSGIApplication([
     webapp2.Route('/', MainHandler),
+    webapp2.Route('/rezultat', RezultatHandler),
 ], debug=True)
