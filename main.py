@@ -52,6 +52,12 @@ class RezultatHandler(BaseHandler):
         sporocilo.put()
         return self.write(rezultat)
 
+class IzbrisiSporociloHandler(BaseHandler):
+    def get(self, sporocilo_id):
+        sporocilo = Sporocilo.get_by_id(int(sporocilo_id))
+        params = {"sporocilo": sporocilo}
+        return self.render_template("izbrisi_sporocilo.html", params=params)
+
 class UrediSporociloHandler(BaseHandler):
     def get(self, sporocilo_id):
         sporocilo = Sporocilo.get_by_id(int(sporocilo_id))
@@ -68,7 +74,8 @@ class UrediSporociloHandler(BaseHandler):
 app = webapp2.WSGIApplication([
     webapp2.Route('/', MainHandler),
     webapp2.Route('/rezultat', RezultatHandler),
-    webapp2.Route('/seznam-sporocil', SeznamSporocilHandler),
+    webapp2.Route('/seznam-sporocil', SeznamSporocilHandler, name="seznam-sporocil"),
     webapp2.Route('/sporocilo/<sporocilo_id:\d+>', PosameznoSporociloHandler),
     webapp2.Route('/sporocilo/<sporocilo_id:\d+>/uredi', UrediSporociloHandler),
+    webapp2.Route('/sporocilo/<sporocilo_id:\d+>/izbrisi', IzbrisiSporociloHandler),
 ], debug=True)

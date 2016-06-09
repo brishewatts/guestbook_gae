@@ -9,8 +9,11 @@
 <body>
   <h1>Seznam sporočil</h1>
 {% for sporocilo in seznam %}
-    <p><a href="/sporocilo/{{ sporocilo.key.id() }}">{{ sporocilo.vnos }}, {{ sporocilo.key.id() }}, {{ sporocilo.nastanek }}</a></p>
+    <p><a href="/sporocilo/{{ sporocilo.key.id() }}">{{ sporocilo.vnos }}, {{ sporocilo.key.id() }}, {{ sporocilo.nastanek }}</a>
+        <a href="/sporocilo/{{ sporocilo.key.id() }}/uredi">uredi sporočilo</a></p>
 {% endfor %}
+
+
 
 </body>
 </html>
