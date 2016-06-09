@@ -31,7 +31,7 @@ class BaseHandler(webapp2.RequestHandler):
 
 class SeznamSporocilHandler(BaseHandler):
     def get(self):
-        seznam = Sporocilo.query().order(Sporocilo.vnos).fetch()
+        seznam = Sporocilo.query(Sporocilo.izbrisan == False).order(Sporocilo.vnos).fetch()
         params = {"seznam": seznam}
         return self.render_template("seznam_sporocil.html", params=params)
 
@@ -57,6 +57,12 @@ class IzbrisiSporociloHandler(BaseHandler):
         sporocilo = Sporocilo.get_by_id(int(sporocilo_id))
         params = {"sporocilo": sporocilo}
         return self.render_template("izbrisi_sporocilo.html", params=params)
+
+    def post(self, sporocilo_id):
+        sporocilo = Sporocilo.get_by_id(int(sporocilo_id))
+        sporocilo.izbrisan = True
+        sporocilo.put()
+        return self.redirect_to("seznam-sporocil")
 
 class UrediSporociloHandler(BaseHandler):
     def get(self, sporocilo_id):
