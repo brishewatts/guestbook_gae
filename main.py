@@ -31,7 +31,7 @@ class BaseHandler(webapp2.RequestHandler):
 
 class SeznamSporocilHandler(BaseHandler):
     def get(self):
-        seznam = Sporocilo.query().fetch()
+        seznam = Sporocilo.query().order(Sporocilo.vnos).fetch()
         params = {"seznam": seznam}
         return self.render_template("seznam_sporocil.html", params=params)
 
@@ -52,9 +52,23 @@ class RezultatHandler(BaseHandler):
         sporocilo.put()
         return self.write(rezultat)
 
+class UrediSporociloHandler(BaseHandler):
+    def get(self, sporocilo_id):
+        sporocilo = Sporocilo.get_by_id(int(sporocilo_id))
+        params = {"sporocilo": sporocilo}
+        return self.render_template("uredi_sporocilo.html", params=params)
+
+    def post(self, sporocilo_id):
+        vnos = self.request.get("vnos")
+        sporocilo = Sporocilo.get_by_id(int(sporocilo_id))
+        sporocilo.vnos = vnos
+        sporocilo.put()
+        return self.redirect_to("seznam-sporocil")
+
 app = webapp2.WSGIApplication([
     webapp2.Route('/', MainHandler),
     webapp2.Route('/rezultat', RezultatHandler),
     webapp2.Route('/seznam-sporocil', SeznamSporocilHandler),
     webapp2.Route('/sporocilo/<sporocilo_id:\d+>', PosameznoSporociloHandler),
+    webapp2.Route('/sporocilo/<sporocilo_id:\d+>/uredi', UrediSporociloHandler),
 ], debug=True)
