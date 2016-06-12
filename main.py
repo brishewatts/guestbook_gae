@@ -35,6 +35,13 @@ class SeznamSporocilHandler(BaseHandler):
         params = {"seznam": seznam}
         return self.render_template("seznam_sporocil.html", params=params)
 
+class SeznamIzbrisanihSporocilHandler(BaseHandler):
+    def get(self):
+        seznam = Sporocilo.query(Sporocilo.izbrisan == True).order(Sporocilo.vnos).fetch()
+        params = {"seznam": seznam}
+        return self.render_template("izbrisana_sporocila.html", params=params)
+
+
 class PosameznoSporociloHandler(BaseHandler):
     def get(self, sporocilo_id):
         sporocilo = Sporocilo.get_by_id(int(sporocilo_id))
@@ -64,6 +71,19 @@ class IzbrisiSporociloHandler(BaseHandler):
         sporocilo.put()
         return self.redirect_to("seznam-sporocil")
 
+class RestoreSporociloHandler(BaseHandler):
+    def get(self, sporocilo_id):
+        sporocilo = Sporocilo.get_by_id(int(sporocilo_id))
+        params = {"sporocilo": sporocilo}
+        return self.render_template("restore_sporocilo.html", params=params)
+
+    def post(self, sporocilo_id):
+        sporocilo = Sporocilo.get_by_id(int(sporocilo_id))
+        sporocilo.izbrisan = False
+        sporocilo.put()
+        return self.redirect_to("izbrisana-sporocila")
+
+
 class UrediSporociloHandler(BaseHandler):
     def get(self, sporocilo_id):
         sporocilo = Sporocilo.get_by_id(int(sporocilo_id))
@@ -84,4 +104,6 @@ app = webapp2.WSGIApplication([
     webapp2.Route('/sporocilo/<sporocilo_id:\d+>', PosameznoSporociloHandler),
     webapp2.Route('/sporocilo/<sporocilo_id:\d+>/uredi', UrediSporociloHandler),
     webapp2.Route('/sporocilo/<sporocilo_id:\d+>/izbrisi', IzbrisiSporociloHandler),
+    webapp2.Route('/sporocilo/<sporocilo_id:\d+>/izbrisani', SeznamIzbrisanihSporocilHandler),
+    webapp2.Route('/sporocilo/<sporocilo_id:\d+>/restore', RestoreSporociloHandler),
 ], debug=True)
